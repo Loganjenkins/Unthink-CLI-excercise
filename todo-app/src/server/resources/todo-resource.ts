@@ -4,10 +4,10 @@ import { resource, get, template, TemplateResponse, RedirectResponse, ApiRespons
 @resource({
   basePath: '',
 })
-export class HelloWorldResource extends ResourceBase {
+export class TodoAppResource extends ResourceBase {
   @template()
   async indexPage(): Promise<TemplateResponse | RedirectResponse> {
-    return new TemplateResponse('hello-world.html');
+    return new TemplateResponse('todo-app.html');
   }
 
   @get({
