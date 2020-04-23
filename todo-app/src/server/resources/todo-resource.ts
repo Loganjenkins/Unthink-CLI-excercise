@@ -1,5 +1,7 @@
 import { ResourceBase } from './resource-base';
-import { resource, get, template, TemplateResponse, RedirectResponse, ApiResponse, CookieResponse } from 'resource-decorator';
+import { resource, get, post, body, template,
+  ApiResponse, TemplateResponse, RedirectResponse,
+  CookieResponse } from 'resource-decorator';
 import {TodoModel} from '../models/todo-model';
 
 const _allTodos: TodoModel[] = [
@@ -29,8 +31,27 @@ export class TodoResource extends ResourceBase {
   @get({
     path: '/api/todo'
   })
+  async getTodos(): Promise<ApiResponse | CookieResponse | void> {
+    return new ApiResponse(_allTodos);
+  }
 
-  async getMessage(): Promise<ApiResponse | CookieResponse | void> {
+
+  @post({
+    path: '/api/add-todo'
+  })
+  async createTodo(@body() newTodo: TodoModel): Promise<ApiResponse | CookieResponse | void> {
+    if(newTodo.id === null) {
+      let id = 0;
+      const lastTodo = _allTodos[_allTodos.length - 1]
+      if(lastTodo !== null && lastTodo.id !== null) {
+        id = lastTodo.id + 1;
+      }
+      newTodo.id = id;
+    }
+
+    _allTodos.push(newTodo);
+
+
     return new ApiResponse(_allTodos);
   }
 }

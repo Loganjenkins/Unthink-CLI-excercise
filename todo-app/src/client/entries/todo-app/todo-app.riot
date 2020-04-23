@@ -3,15 +3,15 @@
   <h1>Stuff you need to get done:</h1>
   <todo-item each={ todo in state.todos } todo={todo}></todo-item>
   <div class="create-new">
-    <input type="text" onchange="{ newTodoName }">
-    <input type="checkbox" onChange="{newTodoComplete}" />complete?
-    <button onclick="{ addNewTodo }">Create new todo</button>
+    <input id="new-todo-name" type="text"><br />
+    <input id="new-todo-completed" type="checkbox" /> completed?<br />
+    <button onclick="{ submitNewTodo }">Create new todo</button>
   </div>
-  
+
   <script type="ts">
     import {RiotComponentExport} from 'riot';
     import {TodoModel} from '../../../server/models/todo-model';
-    import {getTodos} from './api';
+    import {getTodos, createTodo} from './api';
     import TodoItem from './components/todo-item.riot';
 
     interface State {
@@ -36,6 +36,25 @@
               });
             });
         },
+
+        submitNewTodo(): void {
+          if (this.$('#new-todo-name').value !== '' &&
+             this.$('#new-todo-completed').value !== '' ) {
+            const newTodo = new TodoModel({
+              id: 15,
+              title: 'The NEW one!',
+              completed: true,
+              dateCreated: new Date('2020-01-21')
+            });
+            createTodo(newTodo)
+              .then((allTodos) => {
+                console.log('success!');
+                this.update({
+                  todos: allTodos
+                });
+              });
+          }
+        }
 
 
       };

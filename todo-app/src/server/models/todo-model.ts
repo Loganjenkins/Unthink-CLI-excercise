@@ -1,5 +1,5 @@
 export class TodoModel {
-  id?: number;
+  id: number;
   title: string;
   completed: boolean = false;
   dateCreated: Date;
