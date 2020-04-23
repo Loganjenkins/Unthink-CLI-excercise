@@ -1,56 +1,51 @@
-<hello-world>
+<todo-app>
 
-  <h1>{ state.message }</h1>
-
+  <h1>Stuff you need to get done:</h1>
+  <todo-item each={ todo in state.todos } todo={todo}></todo-item>
+  <div class="create-new">
+    <input type="text" onchange="{ newTodoName }">
+    <input type="checkbox" onChange="{newTodoComplete}" />complete?
+    <button onclick="{ addNewTodo }">Create new todo</button>
+  </div>
+  
   <script type="ts">
     import {RiotComponentExport} from 'riot';
+    import {TodoModel} from '../../../server/models/todo-model';
+    import {getTodos} from './api';
+    import TodoItem from './components/todo-item.riot';
 
     interface State {
-      message: string;
+      todos: TodoModel[];
     }
 
-    interface HelloWorld extends RiotComponentExport<never, State> {
+    interface TodoApp extends RiotComponentExport<never, State> {
       state: State;
     }
 
-    function build(): HelloWorld {
+    function build(): TodoApp {
       return {
         state: {
-          message: ''
+          todos: []
         },
 
         onBeforeMount(): void {
-          this.fetchMessage()
-            .then((message: string) => {
+          getTodos()
+            .then(todos => {
               this.update({
-                message: message
+                todos: todos
               });
-            })
-            .catch((err: Error) => {
-              console.error(err);
             });
         },
 
-        async fetchMessage(): Promise<string> {
-          const response = await window.fetch(
-            '/api/message',
-            {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-          );
-          if (response.ok) {
-            return (await response.json())['message'];
-          }
-          throw Error('Could not retrieve message.');
-        }
+
       };
     }
 
-    export default build;
+    build.components = {
+      TodoItem
+    };
 
+    export default build;
   </script>
 
   <style type="scss">
@@ -58,4 +53,4 @@
       display: block;
     }
   </style>
-</hello-world>
+</todo-app>

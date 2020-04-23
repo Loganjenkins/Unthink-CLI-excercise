@@ -1,6 +1,6 @@
 import { component } from 'riot';
-import HelloWorld from './hello-world.riot';
+import TodoApp from './todo-app.riot';
 
 document.addEventListener('DOMContentLoaded', () => {
-  component(HelloWorld)(document.querySelector('hello-world') || document.body);
+  component(TodoApp)(document.querySelector('todo-app') || document.body);
 });

@@ -1,0 +1,40 @@
+<todo-item>
+  <input class="h2" placeholder="{props.todo.title}" />
+  <small>id: { props.todo.id }</small>
+  <p>Completed: { props.todo.completed }</p>
+  <button>Mark as <span if={props.todo.completed}>un</span>complete</button>
+
+  <style type="scss">
+    :host {
+      display: block;
+      padding: 1rem 1.5rem;
+      background-color: #E280D1;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    .complete {
+      background: #AA0000;
+    }
+
+    input {
+      display: block;
+      font-size: 20px;
+      font-weight: bold;
+      width: calc(100% - 2rem);
+      padding: 0.5rem;
+      border: none;
+
+      &::placeholder {
+        font-size: 20px;
+        font-weight: bold;
+        color: #000000;
+      }
+    }
+
+    .h2 {
+      margin-bottom: 0.1rem;
+      margin-top: 0;
+    }
+  </style>
+</todo-item>

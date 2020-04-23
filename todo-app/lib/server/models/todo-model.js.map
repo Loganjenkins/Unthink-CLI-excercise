@@ -1,0 +1,1 @@
+{"version":3,"file":"todo-model.js","sourceRoot":"","sources":["../../../src/server/models/todo-model.ts"],"names":[],"mappings":";;AAAA,MAAa,SAAS;IAMpB,YAAY,IAAyB;QAHrC,cAAS,GAAY,KAAK,CAAC;QAIzB,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,IAAI,CAAC,CAAC;QAC1B,IAAG,IAAI,CAAC,WAAW,EAAE;YACnB,IAAI,CAAC,WAAW,GAAG,IAAI,IAAI,CAAC,IAAI,CAAC,WAAW,CAAC,CAAC;SAC/C;IACH,CAAC;CACF;AAZD,8BAYC"}
