@@ -1,7 +1,7 @@
 <todo-item>
   <input class="h2" id="todo-{props.todo.id}-title" placeholder="{props.todo.title}" />
-  <small>id: {props.todo.id }</small>
-  <small>date created: {props.todo.dateCreated }</small>
+  <p><small>id: {props.todo.id }</small></p>
+  <p><small>date created: {props.todo.dateCreated }</small></p>
   <p>completed? <input id="new-todo-completed" type="checkbox" checked="{props.todo.completed}"/></p>
 
 <!--  <script type="ts">-->
@@ -64,7 +64,7 @@
     }
 
     input {
-      display: block;
+      display: inline-block;
       font-size: 20px;
       font-weight: bold;
       width: calc(100% - 2rem);
