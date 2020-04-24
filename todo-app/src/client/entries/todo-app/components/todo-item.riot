@@ -1,8 +1,54 @@
 <todo-item>
-  <input class="h2" placeholder="{props.todo.title}" />
-  <small>id: { props.todo.id }</small>
-  <p>Completed: { props.todo.completed }</p>
-  <button>Mark as <span if={props.todo.completed}>un</span>complete</button>
+  <input class="h2" id="todo-{props.todo.id}-title" placeholder="{props.todo.title}" />
+  <small>id: {props.todo.id }</small>
+  <small>date created: {props.todo.dateCreated }</small>
+  <p>completed? <input id="new-todo-completed" type="checkbox" checked="{props.todo.completed}"/></p>
+
+<!--  <script type="ts">-->
+<!--    import {RiotComponentExport} from 'riot';-->
+<!--    import {updateTodo} from './../api';-->
+
+<!--    interface State {-->
+<!--      title: string;-->
+<!--      id: number;-->
+<!--      completed: boolean;-->
+<!--      dateCreated: string;-->
+<!--    }-->
+
+<!--    interface TodoItem extends RiotComponentExport<never, State> {-->
+<!--      state: State;-->
+<!--    }-->
+
+<!--    function build(): TodoItem {-->
+<!--      return {-->
+<!--        state: {-->
+<!--          title: '',-->
+<!--          id: 0,-->
+<!--          completed: false,-->
+<!--          dateCreated: ''-->
+<!--        },-->
+
+<!--        onMounted(): void {-->
+<!--          this.update({-->
+<!--            title: this.props.todo.title,-->
+<!--            id: this.props.todo.id,-->
+<!--            completed: this.props.todo.completed,-->
+<!--            dateCreated: this.props.todo.dateCreated-->
+<!--          });-->
+<!--        },-->
+
+<!--        submitUpdateForTodo(id):void {-->
+<!--          if(this.$('#todo-' + this.props.todo.id + '-title').value !== '') {-->
+<!--            updateTodo(this.$('#new-todo-name').value, this.$('#new-todo-completed').checked)-->
+<!--              .then(response => {-->
+<!--                console.log(response);-->
+<!--              });-->
+<!--          }-->
+<!--        }-->
+<!--      }-->
+<!--    }-->
+<!--    export default build;-->
+<!--  </script>-->
 
   <style type="scss">
     :host {

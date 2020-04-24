@@ -35,22 +35,25 @@ export class TodoResource extends ResourceBase {
     return new ApiResponse(_allTodos);
   }
 
-
   @post({
     path: '/api/add-todo'
   })
-  async createTodo(@body() newTodo: TodoModel): Promise<ApiResponse | CookieResponse | void> {
-    if(newTodo.id === null) {
-      let id = 0;
-      const lastTodo = _allTodos[_allTodos.length - 1]
-      if(lastTodo !== null && lastTodo.id !== null) {
-        id = lastTodo.id + 1;
-      }
-      newTodo.id = id;
+  async createTodo(@body() model: TodoModel): Promise<ApiResponse | CookieResponse | void> {
+
+    let id = 0;
+    const lastTodo = _allTodos[_allTodos.length - 1]
+    if (lastTodo !== null && lastTodo.id !== null) {
+      id = lastTodo.id + 1;
     }
 
-    _allTodos.push(newTodo);
+    const result = new TodoModel({
+      id: id,
+      title: model.title,
+      completed: model.completed,
+      dateCreated: new Date()
+    });
 
+    _allTodos.push(result);
 
     return new ApiResponse(_allTodos);
   }

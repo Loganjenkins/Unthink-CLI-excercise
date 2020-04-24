@@ -35,16 +35,19 @@ let TodoResource = class TodoResource extends resource_base_1.ResourceBase {
     async getTodos() {
         return new resource_decorator_1.ApiResponse(_allTodos);
     }
-    async createTodo(newTodo) {
-        if (newTodo.id === null) {
-            let id = 0;
-            const lastTodo = _allTodos[_allTodos.length - 1];
-            if (lastTodo !== null && lastTodo.id !== null) {
-                id = lastTodo.id + 1;
-            }
-            newTodo.id = id;
+    async createTodo(model) {
+        let id = 0;
+        const lastTodo = _allTodos[_allTodos.length - 1];
+        if (lastTodo !== null && lastTodo.id !== null) {
+            id = lastTodo.id + 1;
         }
-        _allTodos.push(newTodo);
+        const result = new todo_model_1.TodoModel({
+            id: id,
+            title: model.title,
+            completed: model.completed,
+            dateCreated: new Date()
+        });
+        _allTodos.push(result);
         return new resource_decorator_1.ApiResponse(_allTodos);
     }
 };
