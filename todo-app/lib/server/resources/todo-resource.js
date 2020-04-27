@@ -52,21 +52,29 @@ let TodoResource = class TodoResource extends resource_base_1.ResourceBase {
         return new resource_decorator_1.ApiResponse(_allTodos);
     }
     async editTodo(model) {
+        let foundId = false;
         for (let i = 0; i < _allTodos.length; i++) {
-            console.log('looking here: ', i);
             if (_allTodos[i].id === model.id) {
-                console.log('found it!');
                 _allTodos[i].title = model.title;
                 _allTodos[i].completed = model.completed;
+                foundId = true;
             }
+        }
+        if (!foundId) {
+            throw new resource_decorator_1.ResourceError(`Toto with ID ${model.id} does not exist.`);
         }
         return new resource_decorator_1.ApiResponse(_allTodos);
     }
     async deleteTodo(model) {
+        let foundId = false;
         for (let i = _allTodos.length; i--; i < 0) {
             if (_allTodos[i].id === model.id) {
                 _allTodos.splice(i, 1);
+                foundId = true;
             }
+        }
+        if (!foundId) {
+            throw new resource_decorator_1.ResourceError(`Toto with ID ${model.id} does not exist.`);
         }
         return new resource_decorator_1.ApiResponse(_allTodos);
     }

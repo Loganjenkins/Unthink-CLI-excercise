@@ -1,5 +1,5 @@
 import { ResourceBase } from './resource-base';
-import { resource, get, post, put, body, del, template,
+import { resource, get, post, put, ResourceError, body, del, template,
   ApiResponse, TemplateResponse, RedirectResponse,
   CookieResponse } from 'resource-decorator';
 import {TodoModel} from '../models/todo-model';
@@ -62,14 +62,18 @@ export class TodoResource extends ResourceBase {
     path: '/api/update-todo'
   })
   async editTodo(@body() model: TodoModel): Promise<ApiResponse | CookieResponse | void> {
+    let foundId = false;
 
-    for(let i = 0; i < _allTodos.length; i++) {
-      console.log('looking here: ', i);
-      if(_allTodos[i].id === model.id) {
-        console.log('found it!');
+    for (let i = 0; i < _allTodos.length; i++) {
+      if (_allTodos[i].id === model.id) {
         _allTodos[i].title = model.title;
         _allTodos[i].completed = model.completed;
+        foundId = true;
       }
+    }
+
+    if (!foundId) {
+      throw new ResourceError(`Toto with ID ${model.id} does not exist.`);
     }
 
     return new ApiResponse(_allTodos);
@@ -79,11 +83,17 @@ export class TodoResource extends ResourceBase {
     path: '/api/delete-todo'
   })
   async deleteTodo(@body() model: TodoModel): Promise<ApiResponse | CookieResponse | void> {
+    let foundId = false;
 
     for (let i = _allTodos.length; i--; i < 0) {
       if (_allTodos[i].id === model.id) {
         _allTodos.splice(i, 1);
+        foundId = true;
       }
+    }
+
+    if (!foundId) {
+      throw new ResourceError(`Toto with ID ${model.id} does not exist.`);
     }
 
     return new ApiResponse(_allTodos);
