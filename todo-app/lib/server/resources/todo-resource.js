@@ -25,7 +25,8 @@ const _allTodos = [
     new todo_model_1.TodoModel({
         id: 1,
         title: 'SECOND one!',
-        dateCreated: new Date('2020-03-01')
+        completed: false,
+        dateCreated: new Date('2020-02-11')
     })
 ];
 let TodoResource = class TodoResource extends resource_base_1.ResourceBase {
@@ -48,6 +49,25 @@ let TodoResource = class TodoResource extends resource_base_1.ResourceBase {
             dateCreated: new Date()
         });
         _allTodos.push(result);
+        return new resource_decorator_1.ApiResponse(_allTodos);
+    }
+    async editTodo(model) {
+        for (let i = 0; i < _allTodos.length; i++) {
+            console.log('looking here: ', i);
+            if (_allTodos[i].id === model.id) {
+                console.log('found it!');
+                _allTodos[i].title = model.title;
+                _allTodos[i].completed = model.completed;
+            }
+        }
+        return new resource_decorator_1.ApiResponse(_allTodos);
+    }
+    async deleteTodo(model) {
+        for (let i = _allTodos.length; i--; i < 0) {
+            if (_allTodos[i].id === model.id) {
+                _allTodos.splice(i, 1);
+            }
+        }
         return new resource_decorator_1.ApiResponse(_allTodos);
     }
 };
@@ -74,6 +94,24 @@ __decorate([
     __metadata("design:paramtypes", [todo_model_1.TodoModel]),
     __metadata("design:returntype", Promise)
 ], TodoResource.prototype, "createTodo", null);
+__decorate([
+    resource_decorator_1.put({
+        path: '/api/update-todo'
+    }),
+    __param(0, resource_decorator_1.body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [todo_model_1.TodoModel]),
+    __metadata("design:returntype", Promise)
+], TodoResource.prototype, "editTodo", null);
+__decorate([
+    resource_decorator_1.del({
+        path: '/api/delete-todo'
+    }),
+    __param(0, resource_decorator_1.body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [todo_model_1.TodoModel]),
+    __metadata("design:returntype", Promise)
+], TodoResource.prototype, "deleteTodo", null);
 TodoResource = __decorate([
     resource_decorator_1.resource({
         basePath: '',

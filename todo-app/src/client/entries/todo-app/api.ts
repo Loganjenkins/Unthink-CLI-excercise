@@ -39,6 +39,7 @@ export async function createTodo(
 }
 
 export async function updateTodo(
+  id: number,
   title: string,
   completed: boolean): Promise<string> {
 
@@ -48,8 +49,31 @@ export async function updateTodo(
       {
         method: 'PUT',
         body: JSON.stringify({
+          id: id,
           title: title,
           completed: completed
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    return (await response.json());
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function deleteTodo(id: number): Promise<string> {
+
+  try {
+    const response = await window.fetch (
+      '/api/delete-todo',
+      {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id: id
         }),
         headers: {
           'Content-Type': 'application/json'

@@ -32,6 +32,7 @@
         onBeforeMount(): void {
           getTodos()
             .then(todos => {
+              console.log('todos: ', todos);
               this.update({
                 todos: todos
               });
@@ -42,7 +43,7 @@
           if (this.$('#new-todo-name').value !== '') {
             createTodo(this.$('#new-todo-name').value, this.$('#new-todo-completed').checked)
               .then(response => {
-                console.log(response);
+                console.log('response: ', response);
                 this.update({
                   todos: response
                 });

@@ -1,57 +1,61 @@
 <todo-item>
-  <input class="h2" id="todo-{props.todo.id}-title" placeholder="{props.todo.title}" />
-  <p><small>id: {props.todo.id }</small></p>
-  <p><small>date created: {props.todo.dateCreated }</small></p>
-  <p>completed? <input id="new-todo-completed" type="checkbox" checked="{props.todo.completed}"/></p>
+  <div class="wrap" if="{!state.deleted}">
+    <input class="h2" id="todo-{props.todo.id}-title" value="{props.todo.title}" />
+    <p><small>id: {props.todo.id }</small></p>
+    <p><small>date created: {props.todo.dateCreated }</small></p>
+    <p>completed? <input id="todo-completed-update" type="checkbox" checked="{props.todo.completed}"/></p>
+    <button onclick={ submitUpdateForTodo }>submit todo update</button>
+    <button onclick={ sendDeleteTodo }>delete todo</button>
+  </div>
 
-<!--  <script type="ts">-->
-<!--    import {RiotComponentExport} from 'riot';-->
-<!--    import {updateTodo} from './../api';-->
+  <script type="ts">
+    import {RiotComponentExport} from 'riot';
+    import {updateTodo, deleteTodo} from './../api';
 
-<!--    interface State {-->
-<!--      title: string;-->
-<!--      id: number;-->
-<!--      completed: boolean;-->
-<!--      dateCreated: string;-->
-<!--    }-->
+    interface Properties {
+      title: string;
+      id: number;
+      completed: boolean;
+      dateCreated: string;
+    }
 
-<!--    interface TodoItem extends RiotComponentExport<never, State> {-->
-<!--      state: State;-->
-<!--    }-->
+    interface State {
+      deleted: boolean;
+    }
 
-<!--    function build(): TodoItem {-->
-<!--      return {-->
-<!--        state: {-->
-<!--          title: '',-->
-<!--          id: 0,-->
-<!--          completed: false,-->
-<!--          dateCreated: ''-->
-<!--        },-->
+    function build(): RiotComponentExport<Properties, State> {
+      return {
+        state: {
+          deleted: false
+        },
 
-<!--        onMounted(): void {-->
-<!--          this.update({-->
-<!--            title: this.props.todo.title,-->
-<!--            id: this.props.todo.id,-->
-<!--            completed: this.props.todo.completed,-->
-<!--            dateCreated: this.props.todo.dateCreated-->
-<!--          });-->
-<!--        },-->
+        submitUpdateForTodo(): void {
+          let newTitle = this.$(`#todo-${this.props.todo.id}-title`).value;
+          if (newTitle === '') {
+            newTitle = this.props.todo.title;
+          }
+          updateTodo(this.props.todo.id, newTitle, this.$('#todo-completed-update').checked)
+            .then(response => {
+              console.log(response);
+            });
+        },
 
-<!--        submitUpdateForTodo(id):void {-->
-<!--          if(this.$('#todo-' + this.props.todo.id + '-title').value !== '') {-->
-<!--            updateTodo(this.$('#new-todo-name').value, this.$('#new-todo-completed').checked)-->
-<!--              .then(response => {-->
-<!--                console.log(response);-->
-<!--              });-->
-<!--          }-->
-<!--        }-->
-<!--      }-->
-<!--    }-->
-<!--    export default build;-->
-<!--  </script>-->
+        sendDeleteTodo(): void {
+          deleteTodo(this.props.todo.id)
+            .then(response => {
+              console.log(response);
+              this.update({
+                deleted: true
+              });
+            });
+        }
+      };
+    }
+    export default build;
+  </script>
 
   <style type="scss">
-    :host {
+    .wrap {
       display: block;
       padding: 1rem 1.5rem;
       background-color: #E280D1;

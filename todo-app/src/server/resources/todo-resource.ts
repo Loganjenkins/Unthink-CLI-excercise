@@ -1,5 +1,5 @@
 import { ResourceBase } from './resource-base';
-import { resource, get, post, body, template,
+import { resource, get, post, put, body, del, template,
   ApiResponse, TemplateResponse, RedirectResponse,
   CookieResponse } from 'resource-decorator';
 import {TodoModel} from '../models/todo-model';
@@ -14,8 +14,8 @@ const _allTodos: TodoModel[] = [
   new TodoModel({
     id: 1,
     title: 'SECOND one!',
-    dateCreated: new Date('2020-03-01')
-
+    completed: false,
+    dateCreated: new Date('2020-02-11')
   })
 ];
 
@@ -54,6 +54,37 @@ export class TodoResource extends ResourceBase {
     });
 
     _allTodos.push(result);
+
+    return new ApiResponse(_allTodos);
+  }
+
+  @put({
+    path: '/api/update-todo'
+  })
+  async editTodo(@body() model: TodoModel): Promise<ApiResponse | CookieResponse | void> {
+
+    for(let i = 0; i < _allTodos.length; i++) {
+      console.log('looking here: ', i);
+      if(_allTodos[i].id === model.id) {
+        console.log('found it!');
+        _allTodos[i].title = model.title;
+        _allTodos[i].completed = model.completed;
+      }
+    }
+
+    return new ApiResponse(_allTodos);
+  }
+
+  @del({
+    path: '/api/delete-todo'
+  })
+  async deleteTodo(@body() model: TodoModel): Promise<ApiResponse | CookieResponse | void> {
+
+    for (let i = _allTodos.length; i--; i < 0) {
+      if (_allTodos[i].id === model.id) {
+        _allTodos.splice(i, 1);
+      }
+    }
 
     return new ApiResponse(_allTodos);
   }
